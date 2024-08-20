@@ -3,33 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random e621 Image</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
             margin: 0;
+            padding: 0;
+            background: transparent; /* Ensure no background color */
         }
         img {
-            max-width: 90%;
-            max-height: 90vh;
-            border: 1px solid #ddd;
+            display: block; /* Remove default spacing */
+            max-width: 100%;
+            max-height: 100vh; /* Ensure image fits within the iframe */
         }
     </style>
 </head>
 <body>
     <img id="randomImage" src="" alt="Random e621 Image"/>
-
     <script>
         async function fetchRandomImage() {
             try {
-                // Fetch a random image from e621
                 const response = await fetch('https://e621.net/posts.json?tags=order:random&limit=1', {
                     headers: {
-                        'User-Agent': 'RandomImageFetcher/1.0'  // Replace with your user-agent
+                        'User-Agent': 'RandomImageFetcher/1.0'
                     }
                 });
 
@@ -41,8 +35,6 @@
                 const post = data.posts[0];
                 if (post && post.file && post.file.url) {
                     const imageUrl = post.file.url;
-
-                    // Set the image URL in the img element
                     document.getElementById('randomImage').src = imageUrl;
                 } else {
                     console.error('Image data is missing');
@@ -52,7 +44,6 @@
             }
         }
 
-        // Fetch the image when the page loads
         fetchRandomImage();
     </script>
 </body>
