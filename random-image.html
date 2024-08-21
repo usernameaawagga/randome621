@@ -42,7 +42,10 @@
 
                     imageElement.onload = function() {
                         // Adjust iframe content height based on image height
-                        document.body.style.height = `${imageElement.clientHeight}px`;
+                        const newHeight = imageElement.clientHeight;
+                        document.body.style.height = `${newHeight}px`;
+                        // Communicate the height to the parent
+                        window.parent.postMessage({ height: newHeight }, '*');
                     };
                 } else {
                     console.error('Image data is missing');
@@ -53,6 +56,16 @@
         }
 
         fetchRandomImage();
+
+        // Handle window resize to adjust iframe height
+        window.addEventListener('resize', () => {
+            const imageElement = document.getElementById('randomImage');
+            if (imageElement) {
+                const newHeight = imageElement.clientHeight;
+                document.body.style.height = `${newHeight}px`;
+                window.parent.postMessage({ height: newHeight }, '*');
+            }
+        });
     </script>
 </body>
 </html>
