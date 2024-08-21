@@ -7,13 +7,14 @@
         body, html {
             margin: 0;
             padding: 0;
-            background: transparent;
+            background: transparent; /* Ensure no background color */
+            overflow: hidden; /* Prevent scrollbars from appearing */
         }
         img {
             display: block;
             max-width: 100%;
             width: 100%;
-            height: auto;
+            height: auto; /* Maintain aspect ratio */
         }
     </style>
 </head>
@@ -36,7 +37,16 @@
                 const post = data.posts[0];
                 if (post && post.file && post.file.url) {
                     const imageUrl = post.file.url;
-                    document.getElementById('randomImage').src = imageUrl;
+                    const imageElement = document.getElementById('randomImage');
+                    imageElement.src = imageUrl;
+                    
+                    imageElement.onload = function() {
+                        // Adjust iframe height to match the image height
+                        window.parent.postMessage({
+                            type: 'resize',
+                            height: imageElement.clientHeight
+                        }, '*');
+                    };
                 } else {
                     console.error('Image data is missing');
                 }
