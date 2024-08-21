@@ -7,29 +7,22 @@
         body, html {
             margin: 0;
             padding: 0;
-            background: transparent;
             overflow: hidden; /* Hide scrollbars */
+            height: 100vh; /* Make sure the body height is 100% of the viewport height */
+            display: flex;
+            align-items: flex-end; /* Align image to the bottom */
+            justify-content: center; /* Center the image horizontally */
         }
         img {
-            display: block;
-            max-width: 100%;
-            width: 100%;
-            height: auto; /* Maintain aspect ratio */
+            max-width: 100vw; /* Ensure image fits within the viewport width */
+            height: 100vh; /* Set height to 100% of the viewport height */
+            object-fit: cover; /* Ensure image covers the container without stretching */
         }
     </style>
 </head>
 <body>
     <img id="randomImage" src="" alt="Random e621 Image"/>
     <script>
-        function adjustIframeHeight() {
-            const imageElement = document.getElementById('randomImage');
-            if (imageElement) {
-                const newHeight = imageElement.offsetHeight; // Use offsetHeight to get the height including borders
-                document.body.style.height = `${newHeight}px`;
-                window.parent.postMessage({ height: newHeight }, '*');
-            }
-        }
-
         async function fetchRandomImage() {
             try {
                 const response = await fetch('https://e621.net/posts.json?tags=order:random+type:jpg+-fart-scatplay+-watersports+-diaper+-feces+-pooping+-multi_breast+-andromorph+-gore+-feral+-multi_nipple+-canine_pussy+-smegma+-vore+-grandfathered_content+-male_focus+-male/male+-maleherm+-intersex/male+-foot_fetish+-foot_focus+-rating:safe+~female+~gynomorph+~herm+~intersex+score:>0&limit=1', {
@@ -46,10 +39,7 @@
                 const post = data.posts[0];
                 if (post && post.file && post.file.url) {
                     const imageUrl = post.file.url;
-                    const imageElement = document.getElementById('randomImage');
-                    imageElement.src = imageUrl;
-
-                    imageElement.onload = adjustIframeHeight;
+                    document.getElementById('randomImage').src = imageUrl;
                 } else {
                     console.error('Image data is missing');
                 }
@@ -59,9 +49,6 @@
         }
 
         fetchRandomImage();
-
-        // Handle window resize to adjust iframe height
-        window.addEventListener('resize', adjustIframeHeight);
     </script>
 </body>
 </html>
