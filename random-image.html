@@ -56,6 +56,13 @@
         }
 
         fetchRandomImage();
+
+        // Listen for messages from the parent window (if needed for other purposes)
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'resize') {
+                // Handle other resize-related messages if necessary
+            }
+        });
     </script>
 </body>
 </html>
