@@ -7,7 +7,7 @@
         body, html {
             margin: 0;
             padding: 0;
-            background: transparent; /* Ensure no background color */
+            background: transparent;
             overflow: hidden; /* Prevent scrollbars from appearing */
         }
         img {
@@ -39,13 +39,10 @@
                     const imageUrl = post.file.url;
                     const imageElement = document.getElementById('randomImage');
                     imageElement.src = imageUrl;
-                    
+
                     imageElement.onload = function() {
-                        // Adjust iframe height to match the image height
-                        window.parent.postMessage({
-                            type: 'resize',
-                            height: imageElement.clientHeight
-                        }, '*');
+                        // Resize the iframe content based on image height
+                        document.body.style.height = `${imageElement.clientHeight}px`;
                     };
                 } else {
                     console.error('Image data is missing');
@@ -56,13 +53,6 @@
         }
 
         fetchRandomImage();
-
-        // Listen for messages from the parent window (if needed for other purposes)
-        window.addEventListener('message', function(event) {
-            if (event.data.type === 'resize') {
-                // Handle other resize-related messages if necessary
-            }
-        });
     </script>
 </body>
 </html>
